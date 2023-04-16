@@ -1,0 +1,676 @@
+@import url(fonts.scss);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Raleway';
+    font-weight: 400;
+}
+
+.container {
+    max-width: 1230px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+@mixin media($size) {
+    @media (max-width: #{$size}px) {
+        @content;
+    }
+}
+
+// start Navbar
+.header-nav {
+    background: rgba(20, 20, 20, 0.5);
+    padding: 25px 0;
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+
+    &-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .burger {
+            display: none;
+            background: transparent;
+            outline: none;
+            border: none;
+            position: fixed;
+            top: 35px;
+            right: 25px;
+            z-index: 999;
+
+            @include media(768) {
+                display: block;
+            }
+        }
+
+        &-list {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+
+            @include media(768) {
+                position: fixed;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 60px;
+                left: 0;
+                top: 0;
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(3px);
+                width: 100%;
+                height: 100%;
+                padding: 20px;
+                visibility: hidden;
+                transform: translateY(-100%);
+                transition: 400ms;
+
+                &.active {
+                    transform: translateY(0);
+                    visibility: visible;
+                }
+            }
+
+            &__link {
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 18px;
+                font-weight: 700;
+
+                &.router-link-exact-active {
+                    color: white;
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        width: 15px;
+                        height: 15px;
+                        background: white;
+                        border-radius: 15px;
+                        bottom: -25px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// end Navbar
+
+// start Upcoming & UpcomingItem
+body {
+    background: #141414;
+    overflow-x: hidden;
+}
+
+.main-upcoming {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    .upcoming-item {
+        height: 100%;
+
+        &-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 50px;
+            text-align: center;
+            color: white;
+            background: rgba(20, 20, 20, 0.76);
+
+            h1 {
+                font-weight: 700;
+                font-size: 80px;
+
+                @include media(850) {
+                    font-size: 40px;
+                }
+            }
+
+            p {
+                max-width: 960px;
+                font-size: 20px;
+            }
+        }
+
+        &__bg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -10;
+        }
+
+        &-next {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            max-width: 576px;
+            height: 100px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+            overflow: hidden;
+
+            img {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 50%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+
+            &-content {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                color: white;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, #000000 55.64%, rgba(0, 0, 0, 0) 100%);
+                padding: 15px;
+                z-index: 10;
+                border-radius: 10px;
+
+                .title {
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+
+                .line {
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.5);
+                    height: 3px;
+                    left: 0;
+
+                    &::before {
+                        content: '';
+                        display: block;
+                        height: 3px;
+                        background: white;
+                        animation: timer 10s linear;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes timer {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.upcoming-enter-active,
+.upcoming-leave-active {
+    transition: 0.4s linear;
+}
+
+.upcoming-enter-from {
+    transform: scale(1);
+}
+
+.upcoming-leave-to {
+    opacity: 0;
+    transform: scale(1.1);
+}
+
+.upcoming-2-enter-active,
+.upcoming-2-leave-active {
+    transition: 0.4s ease-in-out;
+}
+
+.upcoming-2-enter-from {
+    opacity: 0;
+}
+
+.loading {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__spinner {
+        width: 50px;
+        height: 50px;
+        border: 10px double transparent;
+        border-top: 10px double white;
+        border-radius: 50%;
+        animation: loading 1s infinite ease-in-out;
+    }
+
+    @keyframes loading {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+// end Upcoming & UpcomingItem
+
+// start Movies.vue
+.main-media {
+    padding: 25px 0 50px;
+
+    &__title {
+        margin-bottom: 43px;
+        margin-left: 100px;
+        display: flex;
+        gap: 19px;
+
+        span {
+            font-family: "Raleway";
+            font-weight: 700;
+            font-size: 22px;
+            line-height: 120%;
+            color: white;
+        }
+    }
+
+    &-item {
+        height: 540px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px solid black !important;
+        filter: drop-shadow(0px 4px 4px #000000) !important;
+        border-radius: 10px;
+        margin-bottom: 50px;
+        text-align: center;
+        transition: opacity 400ms !important;
+
+        &.active {
+            position: relative;
+            border: 2px solid white !important;
+
+            &::after {
+                content: url(./../img/arrowDown.svg);
+                position: absolute;
+                bottom: -23px;
+            }
+        }
+
+        &:hover {
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        &:last-child {
+            &:hover {
+                opacity: 1;
+                cursor: pointer;
+            }
+        }
+
+        a {
+            img {
+                width: 30%;
+            }
+        }
+
+        .all__films {
+            color: white;
+            font-size: 30px;
+            display: block;
+            padding-top: 30px;
+            text-transform: uppercase;
+        }
+
+        >img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    }
+
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: white !important;
+    opacity: 1 !important;
+    height: 100% !important;
+    top: 0 !important;
+    width: 80px !important;
+
+    &::after {
+        font-size: 24px !important;
+        display: block !important;
+    }
+
+    &.swiper-button-disabled {
+        display: none;
+    }
+}
+
+.swiper-button-next {
+    background: linear-gradient(270deg, rgba(20, 20, 20, 0.9) 0%, rgba(20, 20, 20, 0.6) 36.46%, rgba(20, 20, 20, 0.149846) 91.67%, rgba(20, 20, 20, 0) 100%);
+    right: 0 !important;
+    backdrop-filter: blur(3px);
+}
+
+.swiper-button-prev {
+    background: linear-gradient(88.67deg, rgba(20, 20, 20, 0.9) 1.08%, rgba(20, 20, 20, 0.6) 36.72%, rgba(20, 20, 20, 0.149846) 90.68%, rgba(20, 20, 20, 0) 98.82%);
+    left: 0 !important;
+    backdrop-filter: blur(3px);
+}
+
+.swiper {
+    padding: 0 100px !important;
+    user-select: none;
+}
+
+// end Movies.vue
+
+// START TopRated.vue
+.top-main {
+    background: white;
+    padding: 30px 0 90px;
+
+    .swiper {
+        height: 485px !important;
+    }
+
+    .main-media-item {
+        height: 463px !important;
+    }
+
+    &__title {
+        margin-left: 100px;
+        font-family: 'Montserrat';
+        font-weight: 700;
+        font-style: italic;
+        color: #141414;
+        font-size: 30px;
+        line-height: 100%;
+        margin-bottom: 88px;
+
+        span {
+            font-family: IR;
+            color: #149A03;
+            font-weight: 700;
+            margin-left: 15px;
+            font-size: 50px;
+            font-style: normal;
+            line-height: 60%;
+        }
+    }
+
+    &-item {
+        width: 100%;
+        height: 463px !important;
+    }
+
+    &-info {
+        position: relative;
+        height: 100%;
+        background: #141414;
+        box-shadow: 0px 20px 15px -10px rgba(0, 0, 0, 0.25);
+        border-radius: 10px;
+        z-index: 1;
+
+        &::before {
+            content: '';
+            background: linear-gradient(90deg, #141414 0%, rgba(20, 20, 20, 0) 102.08%);
+            height: 100%;
+            width: 316px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        h2 {
+            position: absolute;
+            left: 80px;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            font-family: 'Montserrat';
+            font-weight: 700;
+            font-size: 150px;
+            color: white;
+            font-style: italic;
+        }
+
+        img {
+            width: 313px;
+            height: 463px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            z-index: -1;
+            border-radius: 10px;
+        }
+    }
+}
+
+// END TopRated.vue
+// START InfoBlock.vue
+
+.main-info {
+    height: 0;
+    margin-top: 30px;
+    position: relative;
+    transition: 500ms;
+    overflow: hidden;
+
+    &.active {
+        height: 700px;
+    }
+
+    &__close {
+        position: absolute;
+        z-index: 100;
+        right: 30px;
+        top: 30px;
+        cursor: pointer;
+    }
+
+    &__img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        object-fit: cover;
+        height: 700px;
+        width: 60%;
+    }
+
+    &-block {
+        height: 100%;
+        position: relative;
+    }
+
+    &-content {
+        position: relative;
+        z-index: 10;
+        height: 100%;
+        background: linear-gradient(90deg, #000000 40%, rgba(0, 0, 0, 0.2) 62.82%, rgba(0, 0, 0, 0) 67.73%);
+
+        &-block {
+            width: 52%;
+            height: 100%;
+            padding: 115px 0 115px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+
+            h2 {
+                color: #FFFFFF;
+                line-height: 1.2;
+                font-size: 50px;
+                font-family: 'Raleway';
+                font-weight: 700;
+            }
+
+            .text {
+                font-size: 20px;
+                line-height: 1.5;
+                color: white;
+            }
+
+            .date {
+                font-size: 20px;
+                line-height: 1.5;
+                color: rgba(255, 255, 255, 0.6);
+                display: flex;
+                align-items: center;
+
+                span {
+                    &:first-child {
+                        margin-right: 10px;
+                    }
+
+                    font-family: 'Montserrat';
+                    font-weight: 700;
+                }
+            }
+
+            .more {
+                width: max-content;
+            }
+        }
+
+        &-actors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        &-actor {
+            background: rgba(20, 20, 20, 0.5);
+            border: 1px solid #FFFFFF;
+            border-radius: 25px;
+            padding-right: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+                width: 45px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            span {
+                text-align: center;
+                color: white;
+                font-size: 16px;
+                line-height: 188%;
+            }
+
+        }
+    }
+}
+
+// END InfoBlock.vue
+
+// Start ContentList.vue
+.main-content {
+    padding-top: 140px;
+
+    &__title {
+        font-size: 18px;
+        font-family: 'Raleway';
+        font-weight: 700;
+        color: white;
+    }
+
+    &-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-top: 50px;
+    }
+
+    &-item {
+        position: relative;
+
+        img {
+            width: 100%;
+            display: block;
+            position: relative;
+        }
+
+        span {
+            position: absolute;
+            z-index: 999;
+            left: 0;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+            color: white;
+            height: 223px;
+            background: linear-gradient(358.77deg, #000000 0.69%, rgba(0, 0, 0, 0.723958) 37.71%, rgba(0, 0, 0, 0) 72.49%);
+            padding-bottom: 16px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+// End ContentList.vue
+
+// START Search.vue
+    .main-search {
+        padding-top: 120px;
+        &__input{
+            border-radius: 10px;    background: white;
+            width: 100%;
+            padding: 20px;
+            color: #141414;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            outline: none;
+        }
+    }
+// END Search.vue
+
